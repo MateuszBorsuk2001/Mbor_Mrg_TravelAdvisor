@@ -1,0 +1,10 @@
+[submodule "directus"]
+	path = directus
+	url = git@github.com:MateuszBorsuk2001/Mbor_Mrg_directus.git
+[submodule "n8n"]
+	path = n8n
+	url = git@github.com:MateuszBorsuk2001/Mbor_Mrg_n8n.git
+[submodule "travel-search-frontend"]
+	path = travel-search-frontend
+	url = git@github.com:MateuszBorsuk2001/Mbor_Mrg_Frontend.git
+	branch = main
