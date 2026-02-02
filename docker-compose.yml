@@ -1,0 +1,140 @@
+name: travel-advisor
+
+services:
+    database:
+        image: postgres:15
+        environment:
+            POSTGRES_DB: directus
+            POSTGRES_USER: directus
+            POSTGRES_PASSWORD: directus
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./directus/database/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+            - ./directus/database/init-travel-schema.sql:/docker-entrypoint-initdb.d/init-travel-schema.sql
+            - ./directus/database/init-chat-schema.sql:/docker-entrypoint-initdb.d/init-chat-schema.sql
+        ports:
+            - "5432:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U directus -d directus"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    directus:
+        image: directus/directus:11.5.1
+        ports:
+            - 8055:8055
+        volumes:
+            - ./directus/uploads:/directus/uploads
+            - ./directus/extensions:/directus/extensions
+        environment:
+            SECRET: "a9f8b7c6d5e4f3g2h1i0j9k8l7m6n5o4p3q2r1s0t9u8v7w6x5y4z3a2b1c0d9e8f7g6h5i4j3k2l1m0"
+            KEY: "b9f8c7d6e5f4g3h2i1j0k9l8m7n6o5p4q3r2s1t0u9v8w7x6y5z4a3b2c1d0e9f8g7h6i5j4k3l2m1n0"
+            ADMIN_EMAIL: "admin@example.com"
+            ADMIN_PASSWORD: "d1r3ctu5"
+            DB_CLIENT: "pg"
+            DB_HOST: "database"
+            DB_PORT: "5432"
+            DB_DATABASE: "directus"
+            DB_USER: "directus"
+            DB_PASSWORD: "directus"
+            WEBSOCKETS_ENABLED: "true"
+            CORS_ENABLED: "true"
+            CORS_ORIGIN: "*"
+            CORS_METHODS: 'GET,POST,PATCH,DELETE'
+            EXTENSIONS_AUTO_RELOAD: "true"
+            NODE_ENV: "development"
+            CACHE_SCHEMA: "false"
+        depends_on:
+            database:
+                condition: service_healthy
+
+    n8n:
+        image: n8nio/n8n:latest
+        ports:
+            - "5678:5678"
+        volumes:
+            - n8n_data:/home/node/.n8n
+            - ./n8n/workflows:/data/workflows
+        environment:
+            - N8N_BASIC_AUTH_ACTIVE=true
+            - N8N_BASIC_AUTH_USER=admin
+            - N8N_BASIC_AUTH_PASSWORD=admin123
+            - DB_TYPE=postgresdb
+            - DB_POSTGRESDB_HOST=database
+            - DB_POSTGRESDB_PORT=5432
+            - DB_POSTGRESDB_DATABASE=n8n
+            - DB_POSTGRESDB_USER=n8n
+            - DB_POSTGRESDB_PASSWORD=n8n
+            - N8N_HOST=0.0.0.0
+            - N8N_PORT=5678
+            - N8N_PROTOCOL=http
+            - WEBHOOK_URL=http://localhost:5678
+            - N8N_DIAGNOSTICS_ENABLED=false
+        depends_on:
+            database:
+                condition: service_healthy
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5678/healthz || exit 1"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+            start_period: 60s
+
+    ollama:
+        image: ollama/ollama:latest
+        ports:
+            - "11434:11434"
+        volumes:
+            - ollama_data:/root/.ollama
+        environment:
+            - OLLAMA_HOST=0.0.0.0
+
+    chat-server:
+        image: node:20-alpine
+        working_dir: /app
+        ports:
+            - "3001:3001"
+        volumes:
+            - ./directus:/app
+        command: sh -c "npm install --omit=dev && node chat-server.js"
+        environment:
+            - PORT=3001
+            - DB_HOST=database
+            - DB_PORT=5432
+            - DB_DATABASE=directus
+            - DB_USER=directus
+            - DB_PASSWORD=directus
+            - N8N_URL=http://n8n:5678
+            - DOCKER_ENV=true
+        depends_on:
+            database:
+                condition: service_healthy
+            n8n:
+                condition: service_started
+
+    travel-search-frontend:
+        build:
+            context: ./travel-search-frontend
+            dockerfile: Dockerfile
+            args:
+                VITE_DIRECTUS_URL: ${VITE_DIRECTUS_URL:-http://localhost:8055}
+                VITE_DIRECTUS_TOKEN: ${VITE_DIRECTUS_TOKEN:-}
+                VITE_CHAT_SERVER_URL: ${VITE_CHAT_SERVER_URL:-http://localhost:3001}
+                VITE_APP_TITLE: ${VITE_APP_TITLE:-TravelSearch}
+                VITE_APP_DESCRIPTION: ${VITE_APP_DESCRIPTION:-Find your dream travel destination}
+        ports:
+            - "3000:80"
+        container_name: travel-search-frontend
+        restart: unless-stopped
+        environment:
+            - NODE_ENV=production
+        depends_on:
+            - directus
+
+volumes:
+    postgres_data:
+    ollama_data:
+    n8n_data:
+
