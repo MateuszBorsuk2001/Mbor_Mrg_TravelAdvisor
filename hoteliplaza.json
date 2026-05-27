@@ -1,0 +1,133 @@
+[
+  {
+    "objectA": {
+      "inputIndex": 7,
+      "categorySignature": "accommodation|accommodation.hotel|building|building.accommodation",
+      "categories": [
+        "accommodation",
+        "accommodation.hotel",
+        "building",
+        "building.accommodation"
+      ],
+      "bucketKey": "accommodation.hotel",
+      "lat": 54.5895269,
+      "lon": 16.8877593,
+      "name": "Perła DWS",
+      "fullObject": {
+        "type": "Feature",
+        "properties": {
+          "name": "Perła DWS",
+          "country": "Poland",
+          "country_code": "pl",
+          "state": "Pomeranian Voivodeship",
+          "county": "Słupsk County",
+          "city": "Ustka",
+          "postcode": "76-270",
+          "suburb": "Grabienko",
+          "street": "Wczasowa",
+          "housenumber": "27",
+          "iso3166_2": "PL-22",
+          "lon": 16.8877593,
+          "lat": 54.5895269,
+          "state_code": "PM",
+          "formatted": "Perła DWS, Wczasowa 27, 76-270 Ustka, Poland",
+          "address_line1": "Perła DWS",
+          "address_line2": "Wczasowa 27, 76-270 Ustka, Poland",
+          "categories": [
+            "accommodation",
+            "accommodation.hotel",
+            "building",
+            "building.accommodation"
+          ],
+          "details": [],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "lat": 54.58940140566802,
+              "lon": 16.887946060558058,
+              "city": "Ustka",
+              "name": "Perła DWS",
+              "osm_id": 272698892,
+              "street": "Wczasowa",
+              "tourism": "hotel",
+              "building": "yes",
+              "osm_type": "w",
+              "postcode": "76-270",
+              "housenumber": 27
+            }
+          },
+          "place_id": "517ab5da6e50e3304059c1c75881714b4b40f00102f9010c0e41100000000092030a506572c5826120445753"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            16.887946060558058,
+            54.58940140566802
+          ]
+        }
+      }
+    },
+    "objectB": {
+      "inputIndex": 21,
+      "categorySignature": "beach",
+      "categories": [
+        "beach"
+      ],
+      "bucketKey": "beach",
+      "lat": 54.5920668,
+      "lon": 16.8922154,
+      "name": "Plaża wschodnia",
+      "fullObject": {
+        "type": "Feature",
+        "properties": {
+          "name": "Plaża wschodnia",
+          "country": "Poland",
+          "country_code": "pl",
+          "state": "Pomeranian Voivodeship",
+          "county": "Słupsk County",
+          "city": "Ustka",
+          "municipality": "gmina Ustka",
+          "iso3166_2": "PL-22",
+          "lon": 16.8922154,
+          "lat": 54.5920668,
+          "state_code": "PM",
+          "formatted": "Plaża wschodnia, Ustka, Słupsk County, Poland",
+          "address_line1": "Plaża wschodnia",
+          "address_line2": "Ustka, Słupsk County, Poland",
+          "categories": [
+            "beach"
+          ],
+          "details": [],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "lat": 54.59028235673912,
+              "lon": 16.875325967046845,
+              "name": "Plaża wschodnia",
+              "osm_id": 10180661,
+              "natural": "beach",
+              "surface": "sand",
+              "osm_type": "r",
+              "supervised": "10:00-18:00"
+            }
+          },
+          "place_id": "5147ced15c15e0304059d7cc4c5f8e4b4b40f00101f90135589b0000000000920310506c61c5bc6120777363686f646e6961"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            16.875325967046845,
+            54.59028235673912
+          ]
+        }
+      }
+    },
+    "distanceMeters": 402.73
+  }
+]
