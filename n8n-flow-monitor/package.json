@@ -1,8 +1,0 @@
-{
-  "name": "n8n-flow-monitor",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "express": "^4.21.2"
-  }
-}

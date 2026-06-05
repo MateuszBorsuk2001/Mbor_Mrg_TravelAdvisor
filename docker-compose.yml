@@ -129,30 +129,6 @@ services:
             n8n:
                 condition: service_started
 
-    # Live per-node execution data from the n8n REST API (see AGENT_RULES.md §17).
-    n8n-flow-monitor:
-        image: node:20-alpine
-        working_dir: /app
-        ports:
-            - "3456:3456"
-        volumes:
-            - ./n8n-flow-monitor:/app
-        command: sh -c "npm install --omit=dev && node server.mjs"
-        environment:
-            - PORT=3456
-            - N8N_INTERNAL_URL=http://n8n:5678
-            - N8N_API_KEY=${N8N_API_KEY:-dev-travel-advisor-n8n-api}
-            # Match service `n8n` editor Basic Auth — monitor sends `Authorization` + `X-N8N-API-KEY` (override via `.env` if changed).
-            - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-admin}
-            - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD:-admin123}
-            - N8N_FLOW_MONITOR_WORKFLOW_NAME=Travel Search
-            - N8N_FLOW_MONITOR_POLL_MS=600
-            # UUID from workflow URL if GET /workflows returns 403 (n8n 2.x RBAC): N8N_FLOW_MONITOR_WORKFLOW_ID=<id>
-            - N8N_FLOW_MONITOR_WORKFLOW_ID=${N8N_FLOW_MONITOR_WORKFLOW_ID:-}
-        depends_on:
-            n8n:
-                condition: service_healthy
-
     travel-search-frontend:
         build:
             context: .
