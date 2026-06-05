@@ -74,6 +74,12 @@ services:
             - N8N_DIAGNOSTICS_ENABLED=false
             # n8n 2.x REST keys come from Settings → n8n API in the UI — not from this alone. Override via .env: N8N_API_KEY=your-key-from-ui
             - N8N_API_KEY=${N8N_API_KEY:-dev-travel-advisor-n8n-api}
+            # Allow workflow expressions/code to read $env (needed for GEOAPIFY_API_KEY + WEBHOOK_SHARED_SECRET below). n8n blocks this by default ("access to env vars denied").
+            - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+            # Geoapify key for the Travel Search workflow ($env.GEOAPIFY_API_KEY in code + HTTP nodes). Put the ROTATED key in .env (gitignored); never inline it in workflow JSON (AGENT_RULES §5/§14).
+            - GEOAPIFY_API_KEY=${GEOAPIFY_API_KEY:-}
+            # Shared secret the workflow's "Authorized?" gate compares against header X-Webhook-Secret. Empty = gate open (back-compat); set in .env to enforce. Must match chat-server.
+            - WEBHOOK_SHARED_SECRET=${WEBHOOK_SHARED_SECRET:-}
         depends_on:
             database:
                 condition: service_healthy
@@ -111,6 +117,8 @@ services:
             - DB_PASSWORD=directus
             - N8N_URL=http://n8n:5678
             - DOCKER_ENV=true
+            # Sent as header X-Webhook-Secret on the POST to n8n /webhook/chat; must match the n8n service value. Empty = no header (gate stays open).
+            - WEBHOOK_SHARED_SECRET=${WEBHOOK_SHARED_SECRET:-}
             # Reflect browser Origin so LAN IPs / non-localhost dev URLs still reach /chat (do not expose publicly).
             - CHAT_CORS_RELAXED=true
             # Set CHAT_STUB_N8N=true to skip n8n and return directus/fixtures/mock-n8n-chat-response.json (frontend/map testing).
