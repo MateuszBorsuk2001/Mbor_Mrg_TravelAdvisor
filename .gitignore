@@ -8,3 +8,13 @@ build/
 coverage/
 .vscode/
 .idea/
+
+# Cloned ourairports-data CSVs (large, regenerable via git clone davidmegginson/ourairports-data)
+data/ourairports-data/
+
+# Local editor/tooling config and scratch
+.claude/
+.cursor/
+.mcp.json
+docs/thesis-figures/
+docs/testing/_c/

@@ -2,8 +2,6 @@
 
 This is the main repository for the TravelAdvisor project, which uses Git submodules to manage multiple components.
 
-For a full **architecture overview**, data flows, integration map, security notes, and safe-change guidelines for developers and AI agents, see **[AGENT_RULES.md](./AGENT_RULES.md)**.
-
 ## Repository Structure
 
 This monorepo contains the following submodules:
@@ -96,10 +94,6 @@ Vue.js frontend application for travel search functionality.
    git pull
    git submodule update --init --recursive
    ```
-
-## Migration Guide
-
-A standalone `REPO_MIGRATION_GUIDE.md` is not included in this repository. For structural context (submodules, Docker services, database init) and operational conventions, use **[AGENT_RULES.md](./AGENT_RULES.md)**. If you need a step-by-step migration doc, add it here or in the wiki and link it from this section.
 
 ## License
 
