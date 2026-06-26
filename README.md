@@ -68,34 +68,4 @@ Vue.js frontend application for travel search functionality.
 
 **Repository:** [Mbor_Mrg_Frontend](https://github.com/MateuszBorsuk2001/Mbor_Mrg_Frontend)
 
-## Development Workflow
-
-### Working with Submodules
-
-1. **Making changes to a submodule:**
-   ```bash
-   cd directus
-   # Make your changes
-   git add .
-   git commit -m "Your commit message"
-   git push origin master
-   cd ..
-   ```
-
-2. **Updating the main repo to point to new submodule commits:**
-   ```bash
-   git add directus
-   git commit -m "Update directus submodule"
-   git push origin master
-   ```
-
-3. **Pulling latest changes (including submodule updates):**
-   ```bash
-   git pull
-   git submodule update --init --recursive
-   ```
-
-## License
-
-[Add your license information here]
 
